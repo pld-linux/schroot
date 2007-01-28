@@ -9,9 +9,6 @@ License:	GPL
 Group:		Applications/System
 Source0:	http://ftp.debian.org/debian/pool/main/s/%{name}/%{name}_%{version}.orig.tar.gz
 # Source0-md5:	7b108d025c4221599e5901d0c9b664bd
-# It's a litle silly patch to avoid boost linking error while configure is running
-# - tested with boost 1.33.1.
-Patch0:		%{name}-ac.patch
 URL:		http://packages.qa.debian.org/s/schroot.html
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -36,7 +33,6 @@ Wykonywanie poleceñ w innym g³ównym systemie.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 sed -e "s/@RELEASE_DATE@/`date '+%d %b %Y'`/" -e "s/@RELEASE_UDATE@/`date '+%s'`/" scripts/schroot_release.m4.in > m4/schroot_release.m4
@@ -46,6 +42,11 @@ sed -e "s/@RELEASE_DATE@/`date '+%d %b %Y'`/" -e "s/@RELEASE_UDATE@/`date '+%s'`
 %{__autoheader}
 %{__automake}
 %{__autoconf}
+
+# workaround for g++ problems with arguments sequence
+cp configure configure.bak
+cat configure.bak | sed -r "s:^(ac_link=.*)(-o conftest.*)(conftest.*ac_ext)(.*):\1 \3 \2 \4:" > configure
+
 %configure
 
 %{__make} CC="%{__cc}"
