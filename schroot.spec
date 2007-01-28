@@ -15,13 +15,17 @@ Patch0:		%{name}-ac.patch
 URL:		http://packages.qa.debian.org/s/schroot.html
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	boost-any-devel
+Buildrequires:	boost-mem_fn-devel
 BuildRequires:	boost-program_options-devel
+BuildRequires:	boost-ref-devel
 BuildRequires:	boost-regex-devel
 BuildRequires:	cppunit-devel
 BuildRequires:	gettext-autopoint
 BuildRequires:	gettext-devel
 BuildRequires:	libuuid-devel
 BuildRequires:	lockdev-devel
+BuildRequires:	pam-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
