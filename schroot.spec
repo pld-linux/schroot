@@ -7,7 +7,7 @@ Version:	1.0.4
 Release:	0.1
 License:	GPL
 Group:		Applications/System
-Source0:	http://ftp.debian.org/debian/pool/main/s/%{name}/%{name}_%{version}.orig.tar.gz
+Source0:	http://ftp.debian.org/debian/pool/main/s/schroot/%{name}_%{version}.orig.tar.gz
 # Source0-md5:	7b108d025c4221599e5901d0c9b664bd
 URL:		http://packages.qa.debian.org/s/schroot.html
 BuildRequires:	autoconf
@@ -23,6 +23,7 @@ BuildRequires:	gettext-devel
 BuildRequires:	libuuid-devel
 BuildRequires:	lockdev-devel
 BuildRequires:	pam-devel
+BuildRequires:	sed >= 4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -44,8 +45,7 @@ sed -e "s/@RELEASE_DATE@/`date '+%d %b %Y'`/" -e "s/@RELEASE_UDATE@/`date '+%s'`
 %{__autoconf}
 
 # workaround for g++ problems with arguments sequence
-cp configure configure.bak
-cat configure.bak | sed -r "s:^(ac_link=.*)(-o conftest.*)(conftest.*ac_ext)(.*):\1 \3 \2 \4:" > configure
+sed -r -i -e "s:^(ac_link=.*)(-o conftest.*)(conftest.*ac_ext)(.*):\1 \3 \2 \4:" configure
 
 %configure
 
@@ -58,12 +58,12 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-cat > do_chroot << EOF
+cat > do_chroot << 'EOF'
 #!/bin/sh
 
-exec schroot -p -q -- "\`basename \$0\`" "\$@"
+exec schroot -p -q -- "`basename $0`" "$@"
 EOF
-	
+
 install do_chroot $RPM_BUILD_ROOT%{_bindir}
 
 %find_lang %{name} --all-name
@@ -75,9 +75,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc README TODO debian/changelog
 %{_mandir}/man?/*
-%dir /etc/%{name}
-%dir /etc/%{name}/exec.d
-%dir /etc/%{name}/setup.d
+%dir %{_sysconfdir}/%{name}
+%dir %{_sysconfdir}/%{name}/exec.d
+%dir %{_sysconfdir}/%{name}/setup.d
 %dir %{_libdir}/%{name}
 %dir /var/lib/%{name}
 %dir /var/lib/%{name}/mount
@@ -85,7 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(4755,root,root) %{_bindir}/%{name}
 %attr(755,root,root) %{_bindir}/do_chroot
 %attr(755,root,root) %{_libdir}/%{name}/*
-%attr(755,root,root) /etc/%{name}/exec.d/*
-%attr(755,root,root) /etc/%{name}/setup.d/*
+%attr(755,root,root) %{_sysconfdir}/%{name}/exec.d/*
+%attr(755,root,root) %{_sysconfdir}/%{name}/setup.d/*
 %attr(640,root,root) %verify(not md5 mtime size) %config(noreplace) /etc/pam.d/%{name}
-%attr(640,root,root) %verify(not md5 mtime size) %config(noreplace) /etc/%{name}/%{name}.conf
+%attr(640,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
