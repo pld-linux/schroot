@@ -3,12 +3,12 @@
 Summary:	Execute commands under different root filesystems
 Summary(pl):	Wykonywanie poleceñ w innym g³ównym systemie
 Name:		schroot
-Version:	1.0.4
+Version:	1.0.5
 Release:	0.1
 License:	GPL
 Group:		Applications/System
 Source0:	http://ftp.debian.org/debian/pool/main/s/schroot/%{name}_%{version}.orig.tar.gz
-# Source0-md5:	7b108d025c4221599e5901d0c9b664bd
+# Source0-md5:	685c6e8c9a9d5de24e543031683b8e30
 URL:		http://packages.qa.debian.org/s/schroot.html
 BuildRequires:	autoconf
 BuildRequires:	automake
