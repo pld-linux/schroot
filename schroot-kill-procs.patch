@@ -1,0 +1,41 @@
+diff -Nur schroot-1.0.5.orig/schroot/setup/10mount schroot-1.0.5.chng/schroot/setup/10mount
+--- schroot-1.0.5.orig/schroot/setup/10mount	2006-07-09 21:46:48.000000000 +0200
++++ schroot-1.0.5.chng/schroot/setup/10mount	2007-02-09 10:05:08.000000000 +0100
+@@ -23,10 +23,37 @@
+     mount $VERBOSE $1 "$2" "$3"
+ }
+ 
++# Kill all processes that were run from within the chroot environment
++# $1: mount base location
++do_kill_all()
++{
++    if [ "$AUTH_VERBOSITY" = "verbose" ]; then
++        echo "Killing processes run inside $1"
++    fi
++    ls /proc | egrep '^[[:digit:]]+$' |
++    while read pid; do
++        if readlink /proc/"$pid"/exe | grep ^"$1"/ >/dev/null; then
++            kill "$pid" 2>/dev/null
++            # Wait 5 seconds for process to release resources
++            count=0
++            while kill -0 "$pid" 2>/dev/null ; do
++                sleep 1
++                count=$(( $count + 1 ))
++                if [ "$count" -eq 5 ]; then
++                    kill -9 "$pid" 2>/dev/null
++                    sleep 1
++                    break
++                fi
++            done
++        fi
++    done
++}
++
+ # Unmount all filesystem under specified location
+ # $1: mount base location
+ do_umount_all()
+ {
++    do_kill_all "$1"
+     "$LIBEXEC_DIR/schroot-listmounts" -m "$1" |
+     while read mountloc; do
+ 	if [ "$AUTH_VERBOSITY" = "verbose" ]; then
