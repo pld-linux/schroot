@@ -1,7 +1,7 @@
 #TODO: proper pam configuration file
 
 Summary:	Execute commands under different root filesystems
-Summary(pl.UTF-8):   Wykonywanie poleceń w innym głównym systemie
+Summary(pl.UTF-8):	Wykonywanie poleceń w innym głównym systemie
 Name:		schroot
 Version:	1.0.5
 Release:	1
