@@ -13,11 +13,7 @@ Patch0:		schroot-kill-procs.patch
 URL:		http://packages.qa.debian.org/s/schroot.html
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	boost-any-devel
-Buildrequires:	boost-mem_fn-devel
-BuildRequires:	boost-program_options-devel
-BuildRequires:	boost-ref-devel
-BuildRequires:	boost-regex-devel
+BuildRequires:	boost-devel >= 1.35.0
 BuildRequires:	cppunit-devel
 BuildRequires:	gettext-autopoint
 BuildRequires:	gettext-devel
