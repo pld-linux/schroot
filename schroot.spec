@@ -9,7 +9,7 @@ License:	GPL
 Group:		Applications/System
 Source0:	http://ftp.debian.org/debian/pool/main/s/schroot/%{name}_%{version}.orig.tar.gz
 # Source0-md5:	685c6e8c9a9d5de24e543031683b8e30
-Patch0:		schroot-kill-procs.patch
+Patch0:		%{name}-kill-procs.patch
 URL:		http://packages.qa.debian.org/s/schroot.html
 BuildRequires:	autoconf
 BuildRequires:	automake
