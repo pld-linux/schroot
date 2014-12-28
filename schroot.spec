@@ -16,7 +16,7 @@ BuildRequires:	automake
 BuildRequires:	boost-devel >= 1.35.0
 BuildRequires:	cppunit-devel
 BuildRequires:	gettext-autopoint
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	libuuid-devel
 BuildRequires:	lockdev-devel
 BuildRequires:	pam-devel
